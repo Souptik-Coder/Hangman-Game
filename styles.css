@@ -1,0 +1,305 @@
+@media only screen and (max-width: 600px) {
+    .key {
+        width: 40px;
+        height: 40px;
+        margin: 7px;
+        padding: 5px;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .key {
+        width: 45px;
+        height: 45px;
+        margin: 8px;
+        padding: 6px;
+        font-size: 17px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .key {
+        width: 50px;
+        height: 50px;
+        margin: 8px;
+        padding: 6px;
+        font-size: 19px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .key {
+        width: 53px;
+        height: 53px;
+        margin: 8px;
+        padding: 6px;
+        font-size: 21px;
+    }
+}
+
+* {
+    cursor: default;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#word-blank {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    width: 100%;
+    background-color: #34568b;
+    color: #ADEFD1FF;
+    font-size: large;
+}
+
+header img {
+    background-color: #ADEFD1FF;
+    width: 60px;
+    height: 60px;
+    margin: 4px;
+    margin-right: 10px;
+}
+
+header span {
+    display: block;
+    margin: auto;
+    margin-right: 7px;
+    cursor: pointer;
+    font-size: large;
+}
+
+header span:hover {
+    text-decoration: underline;
+}
+
+line {
+    stroke: black;
+    stroke-width: 4;
+}
+
+svg {
+    margin: auto;
+    display: block;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.disabled {
+    background-color: grey;
+    border: 3px solid grey;
+
+}
+
+.enabled {
+    border: 3px solid #10bc98;
+    box-shadow: 2px 2px 6px blue;
+    background: transparent;
+}
+
+#keys, #word-blank {
+    text-align: center;
+}
+
+.key {
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.enabled:active {
+    box-shadow: 0 1px 1px lightblue;
+    transform: translateY(2px);
+}
+
+#hint {
+    display: block;
+    margin: auto;
+    outline: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100px;
+    height: 50px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+span {
+    font-weight: bold;
+    margin: 2px;
+}
+
+line, circle {
+    opacity: 0.1;
+}
+
+#rEyes circle, #xEyes line {
+    opacity: 1;
+}
+
+.anim {
+    animation: button 2s infinite;
+    -webkit-animation: button 2s infinite;
+}
+
+@keyframes button {
+    0%, 50%, 90% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    }
+    60% {
+        transform: rotate(6deg) scale(1);
+        -webkit-transform: rotate(5deg) scale(1);
+    }
+    70% {
+        transform: rotate(-6deg) scale(0.9);
+        -webkit-transform: rotate(-6deg) scale(0.9);
+    }
+    80% {
+        transform: rotate(6deg) scale(1.1);
+        -webkit-transform: rotate(6deg) scale(1.1);
+    }
+}
+
+@-webkit-keyframes button {
+    0%, 50%, 90% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    }
+    60% {
+        transform: rotate(5deg) scale(1);
+        -webkit-transform: rotate(5deg) scale(1);
+    }
+    70% {
+        transform: rotate(-5deg) scale(0.97);
+        -webkit-transform: rotate(-5deg) scale(0.97);
+    }
+    80% {
+        transform: rotate(5deg) scale(1.05);
+        -webkit-transform: rotate(5deg) scale(1.05);
+    }
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 10px;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+
+}
+
+.modal-header {
+    padding: 6px;
+    background-color: #ff6f61;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 2px solid #000000;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: black;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #009b77;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#result {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 36, 238, 0.8);
+}
+
+#status {
+    display: block;
+    position: relative;
+    top: 30%;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    font-size: 40px;
+    color: white;
+}
+
+#play {
+    display: block;
+    position: relative;
+    top: 30%;
+    margin: auto;
+    width: 150px;
+    height: 70px;
+    border-radius: 10px;
+    background-color: deeppink;
+    border: 2px solid black;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#info {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgba(100, 150, 120, 0.8);
+}
+
+#info-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px;
+    border: 2px solid black;
+    font-size: 15px;
+    background-color: rgba(100, 150, 120, 1);
+}
+
+#info-head span {
+    font-size: 50px;
+    cursor: pointer;
+}
+
+#info-head span:hover {
+    color: black;
+}
+
+#info-body {
+    font-size: 17px;
+    padding: 10px;
+}
