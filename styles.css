@@ -41,9 +41,10 @@
 * {
     cursor: default;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    user-select: none;
 }
 
-#word-blank {
+#dash-container {
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -64,16 +65,16 @@ header img {
     background-color: #ADEFD1FF;
     width: 60px;
     height: 60px;
-    margin: 4px;
-    margin-right: 10px;
+    margin: 4px 10px 4px 4px;
 }
 
 header span {
     display: block;
-    margin: auto;
-    margin-right: 7px;
+    margin: auto 7px auto auto;
     cursor: pointer;
     font-size: large;
+    animation: vibrate 1.3s 4;
+    animation-delay: 1s;
 }
 
 header span:hover {
@@ -97,23 +98,23 @@ svg {
 .disabled {
     background-color: grey;
     border: 3px solid grey;
-
+    cursor: not-allowed;
 }
 
 .enabled {
     border: 3px solid #10bc98;
     box-shadow: 2px 2px 6px blue;
     background: transparent;
+    cursor: pointer;
 }
 
-#keys, #word-blank {
+#key-container, #dash-container {
     text-align: center;
 }
 
 .key {
     outline: none;
     font-weight: bold;
-    cursor: pointer;
 }
 
 .enabled:active {
@@ -121,22 +122,23 @@ svg {
     transform: translateY(2px);
 }
 
-#hint {
+#get-hint-button {
     display: block;
-    margin: auto;
     outline: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 100px;
+    margin: 5px auto;
+    width: auto;
     height: 50px;
     border-radius: 4px;
     font-size: 14px;
-    cursor: pointer;
 }
 
 span {
     font-weight: bold;
     margin: 2px;
+}
+
+.dash {
+    margin: auto 5px auto 5px;
 }
 
 line, circle {
@@ -190,7 +192,7 @@ line, circle {
     }
 }
 
-.modal {
+.hint-dialog-container {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -204,13 +206,13 @@ line, circle {
 
 }
 
-.modal-header {
+.hint-dialog-header {
     padding: 6px;
     background-color: #ff6f61;
 }
 
 /* Modal Content/Box */
-.modal-content {
+.hint-dialog-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
@@ -219,15 +221,15 @@ line, circle {
 }
 
 /* The Close Button */
-.close {
+.close-hint-span {
     color: black;
     float: right;
     font-size: 30px;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close-hint-span:hover,
+.close-hint-span:focus {
     color: #009b77;
     text-decoration: none;
     cursor: pointer;
@@ -269,7 +271,7 @@ line, circle {
     font-size: 20px;
 }
 
-#info {
+#how-to-play-dialog-container {
     display: none;
     position: fixed;
     top: 0;
@@ -281,7 +283,7 @@ line, circle {
     background-color: rgba(100, 150, 120, 0.8);
 }
 
-#info-head {
+#how-to-play-dialog-header {
     display: flex;
     justify-content: space-between;
     padding: 13px;
@@ -290,16 +292,28 @@ line, circle {
     background-color: rgba(100, 150, 120, 1);
 }
 
-#info-head span {
+#how-to-play-dialog-header span {
     font-size: 50px;
     cursor: pointer;
 }
 
-#info-head span:hover {
+#how-to-play-dialog-header span:hover {
     color: black;
 }
 
-#info-body {
+#how-to-play-dialog-body {
     font-size: 17px;
     padding: 10px;
+}
+
+@keyframes vibrate {
+    0%, 70% {
+        transform: translateX(0px);
+    }
+    10%, 30%, 50% {
+        transform: translateX(5px);
+    }
+    20%, 40%, 60% {
+        transform: translateX(-5px);
+    }
 }

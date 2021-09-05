@@ -23,134 +23,137 @@ const words = [["Hangman", "The game you are playing now"],
     ["Smartphone", "Something you've always on you."],
     ["Playstation", "Gaming console"]];
 
-let wrong = 0, wordIndex, anim = true, currentWord;
-window.onload = () => {
-    wordIndex = Math.floor(Math.random() * words.length);
+let wrong = 0, wordIndex = Math.floor(Math.random() * words.length), anim = true,
     currentWord = words[wordIndex][0].toUpperCase();
-    const word_blank = id("word-blank");
-    const blanks = word_blank.getElementsByTagName("span");
-    const keys = id("keys");
-    const hint = id("hint");
-    const modal = document.querySelector(".modal");
-    const key = document.getElementsByClassName("key");
 
+window.onload = () => {
+    const dashContainer = findElementById("dash-container");
+    const dashes = dashContainer.getElementsByTagName("span");
+    const keyContainer = findElementById("key-container");
+    const hintButton = findElementById("get-hint-button");
+    const hintDialogContainer = document.querySelector(".hint-dialog-container");
+    const key = document.getElementsByClassName("key");
+    const hintText = findElementById("hint-text")
+
+    //Creates buttons from A-Z and append it to dom
     for (let i = 65; i <= 90; i++) {
         let button = document.createElement("button");
         button.classList.add("key");
         button.classList.add("enabled");
         button.innerText = String.fromCharCode(i);
-        keys.appendChild(button);
+        keyContainer.appendChild(button);
     }
 
+    //Creates the dashes
     for (let i = 0; i < currentWord.length; i++) {
         let dash = document.createElement("span");
+        dash.classList.add("dash")
         if (currentWord.charAt(i) === " ")
-            dash.innerHTML = "&nbsp &nbsp &nbsp";
+            dash.innerHTML = " ";
         else
-            dash.innerHTML = "__&nbsp";
-        word_blank.appendChild(dash)
+            dash.innerHTML = "__";
+        dashContainer.appendChild(dash)
     }
 
+    //Adds onClickListener to every button from A-Z
     Array.from(key).forEach((k) => {
 
-        k.addEventListener("click", () => {
-            if (k.className.includes("disabled"))
-                return;
+            k.addEventListener("click", () => {
 
-            if (!currentWord.toUpperCase().includes(k.innerText)) {
-                k.classList.remove("enabled");
-                k.classList.add("disabled");
-                id(++wrong).style.opacity = 1;
-                if (wrong === 10) id("xEyes").classList.remove("hide");
-            } else {
-                for (let i = 0; i < currentWord.length; i++) {
-                    let c = currentWord.charAt(i);
+                //Doesnt respond to a disabled button click
+                if (k.className.includes("disabled"))
+                    return;
 
-                    if (c === k.innerText) {
-
-                        blanks[i].innerHTML = c;
-
-                        k.classList.remove("enabled");
-                        k.classList.add("disabled");
-                    }
+                else if (!currentWord.toUpperCase().includes(k.innerText)) {
+                    k.classList.remove("enabled");
+                    k.classList.add("disabled");
+                    findElementById(++wrong).style.opacity = "1";
+                    if (wrong === 10) findElementById("xEyes").classList.remove("hide");
                 }
-            }
-            if (wrong === 5) {
-                hint.classList.remove("disabled");
-                hint.classList.add("enabled");
+                //key selected matches a character of the currentWord
+                else {
+                    for (let i = 0; i < currentWord.length; i++) {
+                        let c = currentWord.charAt(i);
+                        if (c === k.innerText) {
+                            dashes[i].innerHTML = c;
+                        }
+                    }
+                    k.classList.remove("enabled");
+                    k.classList.add("disabled");
+                }
 
-                if (anim)
-                    hint.classList.add("anim");
+                //Enables the hint button after 5 wrong turns
+                if (wrong === 5 && hintButton.classList.contains("disabled")) {
+                    hintButton.classList.add("anim")
+                    hintButton.classList.add("enabled")
+                    hintButton.classList.remove("disabled");
+                } else if (wrong === 10) {
+                    endGame();
+                    return;
+                }
+                if (countRemainingBlanks(dashes) === 0) {
+                    endGame();
+                }
+            });
+        }
+    );
 
-            }
-            if (wrong === 10) {
-                endGame();
-                return;
-            }
+    hintButton.addEventListener("click", () => {
+        if (hintButton.className !== "disabled")
+            hintDialogContainer.style.display = "block";
 
-            let blank_counter = 0;
-            for (let i = 0; i < blanks.length; i++) {
-                if (blanks[i].innerHTML.includes("_") || blanks[i].innerHTML.includes("&nbsp"))
-                    blank_counter++;
-            }
-            if (blank_counter === 0) {
-                endGame();
-                return;
-            }
-        });
-    });
+        if (hintText.innerHTML == null || hintText.innerText === "") {
+            hintButton.classList.remove("anim");
 
-    hint.addEventListener("click", () => {
-        let body = document.querySelector(".modal-body");
-        if (hint.className === "disabled")
-            return;
-        else {
-            anim = false;
-            hint.classList.remove("anim");
-            modal.style.display = "block";
-            let ht = document.createElement("p");
-            if (body.hasChildNodes()) return;
+            let currentHint = words[wordIndex][1];
+            if (currentHint !== undefined)
+                hintText.innerText = currentHint;
 
-            let hintText = words[wordIndex][1];
-
-            if (hintText !== undefined)
-                ht.innerText = hintText;
+            //If no hint is available then reveal a letter as hint
             else {
-                for (let i = 0; i < blanks.length; i++) {
-                    if (blanks[i].innerHTML.includes("_") || blanks[i].innerHTML.includes("&nbsp")) {
-                        hintText = `Position ${i + 1} of the word is <b>${currentWord.toUpperCase().charAt(i)}</b>`;
+                for (let i = 0; i < dashes.length; i++) {
+                    if (dashes[i].innerHTML.includes("_") || dashes[i].innerHTML.includes("&nbsp")) {
+                        currentHint = `Position ${i + 1} of the word is <b>${currentWord.toUpperCase().charAt(i)}</b>`;
+                        hintText.innerHTML = currentHint
                         break;
                     }
                 }
             }
-            ht.innerHTML = hintText;
-            body.appendChild(ht);
-
         }
     });
-
 }
 
-function id(el) {
-    return document.getElementById(el);
+function findElementById(id) {
+    return document.getElementById(id);
 }
 
 function hideModal() {
-    document.querySelector(".modal").style.display = "none";
+    document.querySelector(".hint-dialog-container").style.display = "none";
 }
 
 function hideInfo() {
-    id("info").style.display = "none";
+    findElementById("how-to-play-dialog-container").style.display = "none";
 }
 
 function showInfo() {
-    id("info").style.display = "block";
+    findElementById("how-to-play-dialog-container").style.display = "block";
+}
+
+function countRemainingBlanks(dashes) {
+    let blank_counter = 0;
+    for (let i = 0; i < dashes.length; i++) {
+        if (dashes[i].innerHTML === "__")
+            blank_counter++;
+    }
+    return blank_counter;
 }
 
 function endGame() {
     let status = document.createElement("h5");
-    status.innerHTML = wrong == 10 ? "You Lose!<br/>The word was " + currentWord : "Hurray you guessed that correct!<br/>The word was " + currentWord;
+    status.innerHTML = wrong === 10 ?
+        "You Lose!<br/>The word was " + currentWord :
+        "Hurray you guessed that correct!<br/>The word was " + currentWord;
 
-    id("status").appendChild(status);
-    id("result").style.display = "block";
+    findElementById("status").appendChild(status);
+    findElementById("result").style.display = "block";
 }
