@@ -68,7 +68,6 @@ window.onload = () => {
                     k.classList.remove("enabled");
                     k.classList.add("disabled");
                     findElementById(++wrong).style.opacity = "1";
-                    if (wrong === 10) findElementById("xEyes").classList.remove("hide");
                 }
                 //key selected matches a character of the currentWord
                 else {
